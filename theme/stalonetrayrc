@@ -1,0 +1,15 @@
+# stalonetray config: docks the tray at the bottom-right corner of the
+# screen, inside the reserved strip in the ForgeOS taskbar
+# (see shell/config.py TRAY_RESERVED_WIDTH = 140).
+
+background "#14161b"
+icon_size 20
+icon_gravity E
+geometry 6x1-4-4
+sticky true
+skip_taskbar true
+window_layer bottom
+window_strut bottom
+grow_gravity E
+transparent false
+no_shrink false

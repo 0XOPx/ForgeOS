@@ -1,0 +1,6 @@
+# Append this block to /etc/skel/.bash_profile so new users get it.
+# Auto-starts the ForgeOS session on tty1 login, without a display manager.
+
+if [ -z "${DISPLAY:-}" ] && [ "$(tty)" = "/dev/tty1" ]; then
+    exec startx -- -nocursor
+fi

@@ -1,0 +1,93 @@
+/* ForgeOS default theme: flat dark UI */
+
+QWidget {
+    background-color: #1c1f26;
+    color: #e8e8ec;
+    font-family: "DejaVu Sans";
+    font-size: 10pt;
+}
+
+#Taskbar {
+    background-color: #14161b;
+    border-top: 1px solid #2a2e37;
+}
+
+#LauncherButton, #SettingsButton {
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
+}
+#LauncherButton:hover, #SettingsButton:hover {
+    background-color: #2a2e37;
+}
+
+#ClockLabel {
+    color: #b7bcc8;
+    padding: 0 8px;
+}
+
+QPushButton {
+    background-color: #23262e;
+    border: 1px solid #2f333d;
+    border-radius: 4px;
+    padding: 4px 10px;
+}
+QPushButton:hover {
+    background-color: #2d313b;
+    border-color: #3d4250;
+}
+QPushButton:checked {
+    background-color: #3a5cff;
+    border-color: #3a5cff;
+    color: #ffffff;
+}
+
+#LauncherPopup {
+    background-color: #1c1f26;
+    border: 1px solid #2f333d;
+    border-radius: 8px;
+}
+
+#LauncherTitle {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #b7bcc8;
+    padding-bottom: 4px;
+}
+
+#AppTile {
+    background-color: #23262e;
+    border-radius: 10px;
+    border: 1px solid #2f333d;
+}
+#AppTile:hover {
+    background-color: #2d313b;
+}
+
+QListWidget {
+    background-color: #16181e;
+    border: 1px solid #2a2e37;
+    border-radius: 4px;
+}
+QListWidget::item:selected {
+    background-color: #3a5cff;
+}
+
+QLineEdit {
+    background-color: #16181e;
+    border: 1px solid #2a2e37;
+    border-radius: 4px;
+    padding: 3px 6px;
+}
+
+QTabWidget::pane {
+    border: 1px solid #2a2e37;
+}
+QTabBar::tab {
+    background: #1c1f26;
+    padding: 6px 14px;
+    border: 1px solid #2a2e37;
+}
+QTabBar::tab:selected {
+    background: #2d313b;
+}

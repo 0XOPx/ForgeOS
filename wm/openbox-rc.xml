@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_config xmlns="http://openbox.org/3.4/rc">
+
+  <resistance>
+    <strength>10</strength>
+    <screen_edge_strength>20</screen_edge_strength>
+  </resistance>
+
+  <focus>
+    <focusNew>yes</focusNew>
+    <followMouse>no</followMouse>
+    <focusLast>yes</focusLast>
+  </focus>
+
+  <placement>
+    <policy>Smart</policy>
+    <center>yes</center>
+  </placement>
+
+  <theme>
+    <name>Clearlooks</name>
+    <titleLayout>NLIMC</titleLayout>
+    <keepBorder>no</keepBorder>
+    <animateIconify>no</animateIconify>
+  </theme>
+
+  <desktops>
+    <number>1</number>
+    <names>
+      <name>Main</name>
+    </names>
+  </desktops>
+
+  <!-- No root menu: the ForgeOS shell's launcher replaces it entirely -->
+  <menu>
+  </menu>
+
+  <keyboard>
+    <keybind key="A-F2">
+      <action name="Execute">
+        <command>xterm</command>
+      </action>
+    </keybind>
+    <keybind key="A-F4">
+      <action name="Close"/>
+    </keybind>
+    <keybind key="A-Tab">
+      <action name="NextWindow"/>
+    </keybind>
+  </keyboard>
+
+  <mouse>
+    <context name="Frame">
+      <mousebind button="A-Left" action="Drag">
+        <action name="Move"/>
+      </mousebind>
+    </context>
+  </mouse>
+
+  <applications>
+    <!-- The ForgeOS shell's own windows (taskbar, launcher popup) get no
+         decorations, no border, and stay above normal windows. -->
+    <application name="Taskbar" class="Taskbar">
+      <decor>no</decor>
+      <layer>above</layer>
+      <skip_taskbar>yes</skip_taskbar>
+      <skip_pager>yes</skip_pager>
+    </application>
+    <application name="LauncherPopup" class="LauncherPopup">
+      <decor>no</decor>
+      <layer>above</layer>
+      <skip_taskbar>yes</skip_taskbar>
+      <skip_pager>yes</skip_pager>
+    </application>
+    <application name="stalonetray" class="stalonetray">
+      <decor>no</decor>
+      <layer>above</layer>
+      <skip_taskbar>yes</skip_taskbar>
+      <skip_pager>yes</skip_pager>
+    </application>
+  </applications>
+
+</openbox_config>

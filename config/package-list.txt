@@ -1,0 +1,35 @@
+# Base
+task-laptop
+locales
+sudo
+network-manager
+firmware-linux-free
+
+# Xorg (no DE/DM)
+xserver-xorg
+xinit
+x11-xserver-utils
+xserver-xorg-input-libinput
+
+# Window management + tray + WM bridge tools
+openbox
+stalonetray
+wmctrl
+xdotool
+
+# ForgeOS shell runtime
+python3
+python3-pyqt5
+python3-pyqt5.qtsvg
+
+# File manager backend hooks
+xdg-utils
+trash-cli
+
+# Terminal + basic utilities
+xterm
+fonts-dejavu
+fonts-noto-core
+htop
+nano
+curl

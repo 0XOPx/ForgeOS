@@ -1,0 +1,28 @@
+#!/bin/bash
+# Installed as ~/.xinitrc (via /etc/skel/.xinitrc). Started by `startx`.
+
+# Load user-level X resources / fontconfig if present
+[ -f "$HOME/.config/fontconfig/fonts.conf" ] || \
+    mkdir -p "$HOME/.config/fontconfig"
+
+# 1. Start the window manager (no titlebars/menus - see wm/openbox-rc.xml)
+openbox --config-file /etc/xdg/openbox/rc.xml &
+OPENBOX_PID=$!
+
+# Give Openbox a moment to establish itself as the WM before clients map
+sleep 0.5
+
+# 2. Start the docked system tray host
+stalonetray --config /opt/forgeos/theme/stalonetrayrc &
+TRAY_PID=$!
+
+# 3. Launch the ForgeOS shell (taskbar + launcher + settings entry point)
+/usr/local/bin/forgeos-start-ui &
+SHELL_PID=$!
+
+# Session lifetime is tied to the shell: when it exits, tear the session
+# down cleanly so `startx` returns and the getty can re-spawn a login.
+wait "$SHELL_PID"
+
+kill "$TRAY_PID" 2>/dev/null
+kill "$OPENBOX_PID" 2>/dev/null
