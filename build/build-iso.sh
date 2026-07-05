@@ -22,13 +22,27 @@ mkdir -p "${BUILD_DIR}"
 cd "${BUILD_DIR}"
 
 echo "==> Configuring live-build (Debian minimal, amd64, no DE)"
+# --mode debian is required even when running live-build ON a Debian host,
+# but it is CRITICAL when the build host itself is Ubuntu (e.g. GitHub
+# Actions' ubuntu-latest runners): lb_config otherwise auto-detects the
+# *host* distro and tries to bootstrap "bookworm" from archive.ubuntu.com,
+# which does not exist and fails with a Release-file 404. Explicit
+# mirrors below make the target independent of whatever /etc/apt on the
+# build host happens to point at.
 lb config \
+    --mode debian \
     --distribution bookworm \
     --archive-areas "main contrib non-free non-free-firmware" \
     --binary-images iso-hybrid \
     --architecture amd64 \
     --debian-installer none \
-    --memtest none
+    --memtest none \
+    --mirror-bootstrap "http://deb.debian.org/debian/" \
+    --mirror-binary "http://deb.debian.org/debian/" \
+    --mirror-chroot-security "http://security.debian.org/debian-security/" \
+    --mirror-binary-security "http://security.debian.org/debian-security/" \
+    --apt-recommends false
+
 
 echo "==> Installing package list"
 mkdir -p config/package-lists
