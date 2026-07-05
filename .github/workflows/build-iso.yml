@@ -1,0 +1,93 @@
+name: Build ForgeOS ISO
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "shell/**"
+      - "theme/**"
+      - "wm/**"
+      - "scripts/**"
+      - "config/**"
+      - "build/**"
+      - ".github/workflows/build-iso.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Free up disk space
+        run: |
+          # live-build needs several GB; the default runner image is tight
+          # once Docker images, Android SDK, etc. are counted. Strip the
+          # stuff we don't need before starting the build.
+          sudo rm -rf /usr/local/lib/android /opt/ghc /usr/share/dotnet \
+                      /usr/local/.ghcup "$AGENT_TOOLSDIRECTORY" || true
+          sudo docker image prune -a -f || true
+          df -h
+
+      - name: Install live-build and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            live-build \
+            debootstrap \
+            squashfs-tools \
+            xorriso \
+            isolinux \
+            syslinux-common \
+            syslinux-efi \
+            grub-pc-bin \
+            grub-efi-amd64-bin \
+            mtools \
+            dosfstools
+
+      - name: Build ISO
+        run: |
+          chmod +x build/build-iso.sh
+          sudo ./build/build-iso.sh
+
+      - name: Locate built ISO
+        id: locate_iso
+        run: |
+          ISO_PATH=$(find live-build-workdir -maxdepth 1 -name "*.iso" | head -n1)
+          if [ -z "$ISO_PATH" ]; then
+            echo "No ISO produced — failing the job." >&2
+            exit 1
+          fi
+          echo "iso_path=${ISO_PATH}" >> "$GITHUB_OUTPUT"
+          echo "iso_name=$(basename "${ISO_PATH}")" >> "$GITHUB_OUTPUT"
+
+      - name: Upload ISO as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: forgeos-iso
+          path: ${{ steps.locate_iso.outputs.iso_path }}
+          retention-days: 14
+          if-no-files-found: error
+
+      - name: Publish nightly release with ISO attached
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: nightly
+          name: "ForgeOS nightly build"
+          body: |
+            Automated ForgeOS ISO build from commit ${{ github.sha }}.
+
+            This release is updated automatically on every push to `main`
+            by `.github/workflows/build-iso.yml`. It is not a stable
+            release — use it for testing images produced from the latest
+            source.
+          prerelease: true
+          make_latest: false
+          files: ${{ steps.locate_iso.outputs.iso_path }}
