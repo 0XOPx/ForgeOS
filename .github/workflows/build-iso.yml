@@ -41,6 +41,7 @@ jobs:
           sudo apt-get install -y \
             live-build \
             debootstrap \
+            debian-archive-keyring \
             squashfs-tools \
             xorriso \
             isolinux \
@@ -50,6 +51,11 @@ jobs:
             grub-efi-amd64-bin \
             mtools \
             dosfstools
+          # debian-archive-keyring above installs Debian's signing keys
+          # into /usr/share/keyrings on this Ubuntu runner, which
+          # debootstrap needs to verify bookworm's Release file (the
+          # runner's own keyring only covers Ubuntu suites).
+
 
       - name: Build ISO
         run: |
